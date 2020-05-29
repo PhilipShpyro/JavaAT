@@ -21,21 +21,26 @@ public class Runway {
 	}
 	
 	void writeStatus() {
-		System.out.println("Runway #" + number + (status == RunwayStatus.isOpened ?
-				" is opened." : (status == RunwayStatus.hasPlane ? " has plane." :
+		System.out.println("runway #" + number + (status == RunwayStatus.isOpened ?
+				" is opened" : (status == RunwayStatus.isClosed ? " has plane" :
 					status)));
 	}
 
 	synchronized void setPlane(Plane plane) {
-		if(status == RunwayStatus.hasPlane) {
-			System.out.println("already has " + this.plane);
-			return;
-		}
 		this.plane = plane;
-		status = RunwayStatus.hasPlane;
+		status = RunwayStatus.isClosed;
+	}
+
+	synchronized void sendPlane() {
+		plane.takeOff();
+	}
+
+	@Override
+	public String toString() {
+		return "runway #" + number;
 	}
 }
 
 enum RunwayStatus {
-	isOpened, hasPlane;
+	isOpened, isClosed;
 }
